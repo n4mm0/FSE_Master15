@@ -12,7 +12,6 @@ import com.mastergame.checkers.model.BoardModel;
 import com.mastergame.checkers.controller.CheckersController;
 import com.mastergame.checkers.controller.Controller;
 
-@SuppressWarnings("unused")
 public class CheckersFrame extends JFrame {
 	private final BoardModel model = new BoardModel(new BoardConfiguration());
 	private final Controller controller;

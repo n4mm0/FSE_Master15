@@ -1,10 +1,7 @@
 package com.mastergame.checkers.model;
 
-public interface Configuration {
-	
-	
-	int getCurrentPlayer();
-	
+public interface Configuration 
+{
 	/**
 	 * Yields the label on the tile at the given coordinates
 	 * 

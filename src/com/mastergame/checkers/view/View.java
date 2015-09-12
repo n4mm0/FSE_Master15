@@ -10,9 +10,8 @@ public interface View {
 	// 3: change your display
 	void showSolvedDialog();
 	void selectTile(int x, int y);
-	void deselectTile(int x, int y);
 	void highlightTile(int x, int y);
-	void resetBackgroundColor();
+	void resetTilesColor();
 	
 	// 4: I've changed
 	void onConfigurationChange();

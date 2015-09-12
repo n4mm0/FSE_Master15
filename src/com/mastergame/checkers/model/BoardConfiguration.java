@@ -1,13 +1,14 @@
 package com.mastergame.checkers.model;
 
+import com.mastergame.checkers.Constants;
+
 public class BoardConfiguration extends AbstractConfiguration 
 {
 	private final int[][] tiles;
-	private int currentPlayer = 1; //1: WHITE -1: BLACK
 
 	private BoardConfiguration(int[][] tiles) {
 		this.tiles = new int[Constants.boardSize][];
-		for (int y = 0; y < 10; y++)
+		for (int y = 0; y < Constants.boardSize; y++)
 			this.tiles[y] = tiles[y].clone();
 	}
 
@@ -58,11 +59,5 @@ public class BoardConfiguration extends AbstractConfiguration
 		result.set(fromX, fromY, intoValue);
 		
 		return result;
-	}
-
-	@Override
-	public int getCurrentPlayer() 
-	{
-		return currentPlayer;
 	}
 }

@@ -1,13 +1,16 @@
 package com.mastergame.checkers.model;
 
+import com.mastergame.checkers.Constants;
+import com.mastergame.checkers.moves.Rules;
 import com.mastergame.checkers.view.View;
 
 public class BoardModel implements Model 
 {
 	private Configuration configuration;
 	private ConfigurationChangeListener listener;
-	@SuppressWarnings("unused")
 	private View view;
+	private int currentPlayer = 1; //1: WHITE -1: BLACK
+	private boolean mustCapture = false;
 
 	public BoardModel(Configuration configuration) {
 		this.configuration = configuration;
@@ -24,8 +27,8 @@ public class BoardModel implements Model
 	public void setConfiguration(Configuration configuration) {
 		if (this.configuration != configuration) {
 			this.configuration = configuration;
-			if (listener != null)
-				listener.onConfigurationChange();
+			if (view != null)
+				view.onConfigurationChange();
 		}
 	};
 
@@ -41,5 +44,29 @@ public class BoardModel implements Model
 	public void setView(View view) 
 	{
 		this.view = view;
+	}
+
+	@Override
+	public int getCurrentPlayer() 
+	{
+		return currentPlayer;
+	}
+	
+	@Override
+	public void nextTurn()
+	{
+		currentPlayer = -currentPlayer;
+		for (int i = 0; i < Constants.boardSize; ++i)
+		{
+			for (int j = 0; j < Constants.boardSize; ++j)
+			{
+				if (configuration.at(i, j) != 0 && Rules.canPieceCapture(configuration, i, j))
+				{
+					mustCapture = true;
+					return;
+				}
+			}
+		}
+		mustCapture = false;
 	}
 }

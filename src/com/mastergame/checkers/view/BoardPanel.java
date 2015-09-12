@@ -12,11 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.controller.Controller;
 import com.mastergame.checkers.model.Model;
 import com.sun.xml.internal.bind.WhiteSpaceProcessor;
 
-@SuppressWarnings("unused")
 public class BoardPanel extends JPanel implements View 
 {
 	private final JFrame frame;
@@ -114,12 +114,23 @@ public class BoardPanel extends JPanel implements View
 	@Override
 	public void onConfigurationChange() 
 	{
-		for (int y = 0; y < 4; y++)
+		for (int y = 0; y < Constants.boardSize; y++)
 		{
-			for (int x = 0; x < 4; x++)
+			for (int x = 0; x < Constants.boardSize; x++)
 			{
-				//buttons[x][y].setText(model.at(x, y) == 0 ?
-				//	"" : String.valueOf(model.at(x, y)));
+				int value = model.at(x,y);
+				switch (value)
+				{
+					case 1: buttons[x][y].setIcon(whitePiece);
+							break;
+					
+					case -1:buttons[x][y].setIcon(blackPiece);
+							break;
+							
+					default:buttons[x][y].setIcon(blank);
+							break;
+				}
+						
 			}
 		}
 	}
@@ -136,19 +147,13 @@ public class BoardPanel extends JPanel implements View
 	}
 	
 	@Override
-	public void deselectTile(int x, int y)
-	{
-		buttons[x][y].setBackground(Color.WHITE);
-	}
-	
-	@Override
 	public void highlightTile(int x, int y)
 	{
 		buttons[x][y].setBackground(Color.YELLOW);
 	}
 	
 	@Override
-	public void resetBackgroundColor()
+	public void resetTilesColor()
 	{
 		for (int y = 0; y < size; y++)
 			for (int x = 0; x < size; x++)

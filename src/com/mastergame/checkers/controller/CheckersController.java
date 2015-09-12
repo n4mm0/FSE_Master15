@@ -1,7 +1,9 @@
 package com.mastergame.checkers.controller;
 
+import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.model.Model;
 import com.mastergame.checkers.moves.Mover;
+import com.mastergame.checkers.moves.Rules;
 import com.mastergame.checkers.view.View;
 
 public class CheckersController implements Controller 
@@ -28,7 +30,7 @@ public class CheckersController implements Controller
 	{
 		if (model.at(x, y) != 0) //If the tile is not blank
 		{
-			if (model.at(x, y) == model.getConfiguration().getCurrentPlayer())
+			if (model.at(x, y) == model.getCurrentPlayer())
 			{
 				if (!pieceSelected)
 				{
@@ -39,13 +41,13 @@ public class CheckersController implements Controller
 					if (x != selectedPieceX || y != selectedPieceY)
 					{
 						//view.deselectTile(selectedPieceX, selectedPieceY);
-						view.resetBackgroundColor();
+						view.resetTilesColor();
 						SelectPiece(x, y);
 					}
 					else 
 					{
 						//view.deselectTile(selectedPieceX, selectedPieceY);
-						view.resetBackgroundColor();
+						view.resetTilesColor();
 						pieceSelected = false;
 					}
 				}
@@ -55,14 +57,12 @@ public class CheckersController implements Controller
 		{
 			if (pieceSelected)
 			{
-				
-				//se la mossa richiesta è legale allora muovi!
-			//new Rules().IsMoveLegal(selectedPieceX, selectedPieceY, x, y)
-			
-			/*mover.moveAt(x, y);
-			if (mover.isSolved())
-				view.showSolvedDialog();*/
-				
+				if (Rules.isMoveLegal(model, selectedPieceX, selectedPieceY, x, y))
+				{
+					model.setConfiguration(model.getConfiguration().swap(selectedPieceX, selectedPieceY, x, y));
+					view.resetTilesColor();
+					model.nextTurn();
+				}
 			}
 			
 		}
@@ -76,19 +76,22 @@ public class CheckersController implements Controller
 		view.selectTile(x, y);
 		
 		//Highlight legal moves
-		if (!mover.canPieceCapture(x, y))
+		if (!Rules.canPieceCapture(model.getConfiguration(), x, y))
 		{
-			for (int offset = -1; offset < 2; offset+=2)
+			for (int j = 0; j < Constants.boardSize; j++)
 			{
-				if (mover.isMoveLegal(x, y, x + offset, y + model.getConfiguration().getCurrentPlayer()))
+				for (int i = 0; i < Constants.boardSize; i++)
 				{
-					view.highlightTile(x + offset, y + model.getConfiguration().getCurrentPlayer());
+					if (Rules.isMoveLegal(model, x, y, i, j))
+					{
+						view.highlightTile(i, j);
+					}
 				}
 			}
 		}
 		else 
 		{
-			
+			//To-do
 		}
 	}
 }
