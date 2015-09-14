@@ -57,11 +57,20 @@ public class CheckersController implements Controller
 		{
 			if (pieceSelected)
 			{
-				if (Rules.isMoveLegal(model, selectedPieceX, selectedPieceY, x, y))
+				int moveLegality = Rules.isMoveLegal(model, selectedPieceX, selectedPieceY, x, y);
+				if (model.mustCapture())
 				{
-					model.setConfiguration(model.getConfiguration().swap(selectedPieceX, selectedPieceY, x, y));
-					view.resetTilesColor();
-					model.nextTurn();
+					if (moveLegality == 2)
+					{
+						Move(selectedPieceX, selectedPieceY, x, y);
+					}
+				}
+				else
+				{
+					if (moveLegality == 1)
+					{
+						Move(selectedPieceX, selectedPieceY, x, y);
+					}
 				}
 			}
 			
@@ -76,22 +85,33 @@ public class CheckersController implements Controller
 		view.selectTile(x, y);
 		
 		//Highlight legal moves
-		if (!Rules.canPieceCapture(model.getConfiguration(), x, y))
+		for (int j = 0; j < Constants.boardSize; j++)
 		{
-			for (int j = 0; j < Constants.boardSize; j++)
+			for (int i = 0; i < Constants.boardSize; i++)
 			{
-				for (int i = 0; i < Constants.boardSize; i++)
+				if (model.mustCapture())
 				{
-					if (Rules.isMoveLegal(model, x, y, i, j))
+					if (Rules.isMoveLegal(model, x, y, i, j) == 2)
+					{
+						view.highlightTile(i, j);
+					}
+				}
+				else 
+				{
+					if (Rules.isMoveLegal(model, x, y, i, j) == 1)
 					{
 						view.highlightTile(i, j);
 					}
 				}
 			}
 		}
-		else 
-		{
-			//To-do
-		}
+	}
+	
+	private void Move(int fromX, int fromY, int toX, int toY)
+	{
+		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
+		view.resetTilesColor();
+		
+		model.nextTurn();
 	}
 }

@@ -18,8 +18,8 @@ public final class Rules
 		return null;
 	}
 	
-	//Check is the move is legal
-	public static boolean isMoveLegal(Model model, int fromX, int fromY, int toX, int toY)
+	//Returns: 0 = not legal, 1 = movement; 2 = capture
+	public static int isMoveLegal(Model model, int fromX, int fromY, int toX, int toY)
 	{
 		int distX = Math.abs(toX - fromX);
 		int distY = Math.abs(toY - fromY);
@@ -34,7 +34,7 @@ public final class Rules
 		{
 			if (distX == 1 && distY == 1 && model.at(toX, toY) == 0)
 			{
-				return true;
+				return 1;
 			}
 			else 
 			{
@@ -43,16 +43,24 @@ public final class Rules
 					&& model.at(toX, toY) == 0 
 					&& model.at(fromX + directionX, fromY + directionY) == -model.getCurrentPlayer())
 				{
-					return true;
+					return 2;
 				}
 			}
 		}
 		
-		return false;
+		return 0;
 	}
 	
-	public static boolean canPieceCapture(Configuration configuration, int x, int y)
+	public static boolean canPieceCapture(Configuration configuration, int x, int y, int currentPlayer)
 	{
+		if ((x - 2 >= 0 && y + currentPlayer*2 >= 0 && y + currentPlayer*2 < Constants.boardSize)
+			&& configuration.at(x - 1, y + currentPlayer) == -currentPlayer
+			&& configuration.at(x - 2, y + currentPlayer*2) == 0)
+			return true;
+		if ((x + 2 < Constants.boardSize && y + currentPlayer*2 >= 0 && y + currentPlayer*2 < Constants.boardSize)
+				&& configuration.at(x + 1, y + currentPlayer) == -currentPlayer
+				&& configuration.at(x + 2, y + currentPlayer*2) == 0)
+				return true;
 		return false;
 	}
 	

@@ -56,11 +56,11 @@ public class BoardModel implements Model
 	public void nextTurn()
 	{
 		currentPlayer = -currentPlayer;
-		for (int i = 0; i < Constants.boardSize; ++i)
+		for (int j = 0; j < Constants.boardSize; j++)
 		{
-			for (int j = 0; j < Constants.boardSize; ++j)
+			for (int i = 0; i < Constants.boardSize; i++)
 			{
-				if (configuration.at(i, j) != 0 && Rules.canPieceCapture(configuration, i, j))
+				if (configuration.at(i, j) == currentPlayer && Rules.canPieceCapture(configuration, i, j, currentPlayer))
 				{
 					mustCapture = true;
 					return;
@@ -68,5 +68,11 @@ public class BoardModel implements Model
 			}
 		}
 		mustCapture = false;
+	}
+
+	@Override
+	public boolean mustCapture() 
+	{
+		return mustCapture;
 	}
 }

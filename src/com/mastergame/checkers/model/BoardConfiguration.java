@@ -58,6 +58,17 @@ public class BoardConfiguration extends AbstractConfiguration
 		result.set(intoX, intoY, fromValue);
 		result.set(fromX, fromY, intoValue);
 		
+		int distX = Math.abs(intoX - fromX);
+		int distY = Math.abs(intoY - fromY);
+		int directionX = Integer.signum(intoX - fromX);
+		int directionY = Integer.signum(intoY - fromY);
+		
+		//If we captured a piece
+		if (distX == 2 && distY == 2)
+		{
+			result.set(fromX + directionX, fromY + directionY, 0);
+		}
+		
 		return result;
 	}
 }
