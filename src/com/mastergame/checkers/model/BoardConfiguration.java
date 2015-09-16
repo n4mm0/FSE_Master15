@@ -14,30 +14,48 @@ public class BoardConfiguration extends AbstractConfiguration
 
 	public BoardConfiguration() {
 		this.tiles = new int[Constants.boardSize][Constants.boardSize];
-
-		for (int y = 0; y < Constants.boardSize; y++)
+		
+		for (int y = 0; y < Constants.boardSize / 2 - 1; y++)
+		{
 			for (int x = 0; x < Constants.boardSize; x++)
-				// Setting up white pieces
-				if (((y == 0) || (y == 2)) && (x % 2 != 0))			// 1ST AND 3RD LINE
+			{
+				if (y % 2 == 0)
 				{
-					set(x,y,1);
-				} else if(((y == 1) || (y == 3)) && (x % 2 == 0))	// 2ND AND 4TH LINE
-				{
-					set(x,y,1);
+					if (x % 2 != 0)
+					{
+						set(x,y,1);
+					}
 				}
-				// Setting up black pieces
-				else if(((y == 6) || (y == 8)) && (x % 2 != 0))		// 6TH AND 8TH LINE
+				else 
 				{
-					set(x,y,-1);
-				} else if (((y == 7) || (y == 9)) && (x % 2 == 0))	// 7TH AND 9TH LINE
-				{
-					set(x,y,-1);
+					if (x % 2 == 0)
+					{
+						set(x,y,1);
+					}
 				}
-				// Setting everything else to blank
-				else
+			}
+		}
+		
+		for (int y = Constants.boardSize / 2 + 1; y < Constants.boardSize; y++)
+		{
+			for (int x = 0; x < Constants.boardSize; x++)
+			{
+				if (y % 2 == 0)
 				{
-					set(x,y,0);
+					if (x % 2 != 0)
+					{
+						set(x,y,-1);
+					}
 				}
+				else 
+				{
+					if (x % 2 == 0)
+					{
+						set(x,y,-1);
+					}
+				}
+			}
+		}
 	}
 
 	@Override

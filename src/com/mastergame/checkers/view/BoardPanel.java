@@ -22,8 +22,7 @@ public class BoardPanel extends JPanel implements View
 	private final JFrame frame;
 	private final Model model;
 	private Controller controller;
-	private final int size = 10;
-	private final JButton[][] buttons = new JButton[size][size];
+	private final JButton[][] buttons = new JButton[Constants.boardSize][Constants.boardSize];
 	private ImageIcon whitePiece;
 	private ImageIcon blackPiece;
 	private ImageIcon blank;
@@ -45,7 +44,7 @@ public class BoardPanel extends JPanel implements View
 
 	private void createButtons() 
 	{
-		setLayout(new GridLayout(size, size));
+		setLayout(new GridLayout(Constants.boardSize, Constants.boardSize));
 		
 		try 
 		{
@@ -74,8 +73,8 @@ public class BoardPanel extends JPanel implements View
 			e.printStackTrace();
 		}
 		
-		for (int y = 0; y < size; y++)
-			for (int x = 0; x < size; x++)
+		for (int y = 0; y < Constants.boardSize; y++)
+			for (int x = 0; x < Constants.boardSize; x++)
 				add(buttons[x][y] = mkButton(x, y, model.at(x, y)));
 	}
 
@@ -155,8 +154,8 @@ public class BoardPanel extends JPanel implements View
 	@Override
 	public void resetTilesColor()
 	{
-		for (int y = 0; y < size; y++)
-			for (int x = 0; x < size; x++)
+		for (int y = 0; y < Constants.boardSize; y++)
+			for (int x = 0; x < Constants.boardSize; x++)
 				buttons[x][y].setBackground(Color.WHITE);
 	}
 }
