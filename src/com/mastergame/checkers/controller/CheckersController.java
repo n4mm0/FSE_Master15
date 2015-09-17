@@ -15,6 +15,7 @@ public class CheckersController implements Controller
 	private boolean pieceSelected = false;
 	private int selectedPieceX = -1;
 	private int selectedPieceY = -1;
+	private boolean chain = false;
 
 	public CheckersController(View view) 
 	{
@@ -30,7 +31,7 @@ public class CheckersController implements Controller
 	{
 		if (model.at(x, y) != 0) //If the tile is not blank
 		{
-			if (model.at(x, y) == model.getCurrentPlayer())
+			if (model.at(x, y) == model.getCurrentPlayer() && !chain)
 			{
 				if (!pieceSelected)
 				{
@@ -110,8 +111,19 @@ public class CheckersController implements Controller
 	private void Move(int fromX, int fromY, int toX, int toY)
 	{
 		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
-		view.resetTilesColor();
-		
-		model.nextTurn();
+		//Chain check, true if the piece captured before and can capture again
+		if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getCurrentPlayer()) && !model.mustCapture())
+		{
+			view.resetTilesColor();
+			SelectPiece(toX, toY);
+			chain = true;
+		}
+		else 
+		{
+			chain = false;
+			pieceSelected = false;
+			view.resetTilesColor();
+			model.nextTurn();
+		}
 	}
 }
