@@ -15,6 +15,10 @@ public interface Configuration
 
 	int at(int x, int y);
 
+	
+	int getCurrentPlayer();
+	void nextPlayer();
+	
 	/**
 	 * Yields a new configuration where a tile has been swapped
 	 * with another tile. This configuration remains unchanged

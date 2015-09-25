@@ -31,7 +31,7 @@ public class CheckersController implements Controller
 	{
 		if (model.at(x, y) != 0) //If the tile is not blank
 		{
-			if (model.at(x, y) == model.getCurrentPlayer() && !chain)
+			if (model.at(x, y) == model.getConfiguration().getCurrentPlayer() && !chain)
 			{
 				if (!pieceSelected)
 				{
@@ -112,7 +112,7 @@ public class CheckersController implements Controller
 	{
 		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
 		//Chain check, true if the piece captured before and can capture again
-		if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getCurrentPlayer()) && !model.mustCapture())
+		if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getConfiguration().getCurrentPlayer()) && model.mustCapture())
 		{
 			view.resetTilesColor();
 			SelectPiece(toX, toY);

@@ -9,7 +9,6 @@ public class BoardModel implements Model
 	private Configuration configuration;
 	private ConfigurationChangeListener listener;
 	private View view;
-	private int currentPlayer = 1; //1: WHITE -1: BLACK
 	private boolean mustCapture = false;
 
 	public BoardModel(Configuration configuration) {
@@ -45,22 +44,16 @@ public class BoardModel implements Model
 	{
 		this.view = view;
 	}
-
-	@Override
-	public int getCurrentPlayer() 
-	{
-		return currentPlayer;
-	}
 	
 	@Override
 	public void nextTurn()
 	{
-		currentPlayer = -currentPlayer;
+		configuration.nextPlayer();
 		for (int j = 0; j < Constants.boardSize; j++)
 		{
 			for (int i = 0; i < Constants.boardSize; i++)
 			{
-				if (configuration.at(i, j) == currentPlayer && Rules.canPieceCapture(configuration, i, j, currentPlayer))
+				if (configuration.at(i, j) == configuration.getCurrentPlayer() && Rules.canPieceCapture(configuration, i, j, configuration.getCurrentPlayer()))
 				{
 					mustCapture = true;
 					return;

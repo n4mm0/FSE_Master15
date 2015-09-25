@@ -30,7 +30,7 @@ public final class Rules
 			&& (fromY>=0 && fromY<Constants.boardSize)
 			&& (toX>=0 && toX<Constants.boardSize)
 			&& (toY>=0 && toY<Constants.boardSize)
-			&& directionY == model.getCurrentPlayer())
+			&& directionY == model.getConfiguration().getCurrentPlayer())
 		{
 			if (distX == 1 && distY == 1 && model.at(toX, toY) == 0)
 			{
@@ -41,7 +41,7 @@ public final class Rules
 				if (distX == 2 
 					&& distY == 2 
 					&& model.at(toX, toY) == 0 
-					&& model.at(fromX + directionX, fromY + directionY) == -model.getCurrentPlayer())
+					&& model.at(fromX + directionX, fromY + directionY) == -model.getConfiguration().getCurrentPlayer())
 				{
 					return 2;
 				}

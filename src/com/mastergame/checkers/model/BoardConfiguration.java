@@ -5,11 +5,13 @@ import com.mastergame.checkers.Constants;
 public class BoardConfiguration extends AbstractConfiguration 
 {
 	private final int[][] tiles;
+	private int currentPlayer = 1; //1: WHITE -1: BLACK
 
-	private BoardConfiguration(int[][] tiles) {
+	private BoardConfiguration(BoardConfiguration other) {
+		this.currentPlayer = other.currentPlayer;
 		this.tiles = new int[Constants.boardSize][];
 		for (int y = 0; y < Constants.boardSize; y++)
-			this.tiles[y] = tiles[y].clone();
+			this.tiles[y] = other.tiles[y].clone();
 	}
 
 	public BoardConfiguration() {
@@ -69,7 +71,7 @@ public class BoardConfiguration extends AbstractConfiguration
 
 	@Override
 	public Configuration swap(int fromX, int fromY, int intoX, int intoY) {
-		BoardConfiguration result = new BoardConfiguration(tiles);
+		BoardConfiguration result = new BoardConfiguration(this);
 
 		int intoValue = at(intoX, intoY);
 		int fromValue = at(fromX, fromY);
@@ -88,5 +90,17 @@ public class BoardConfiguration extends AbstractConfiguration
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int getCurrentPlayer() 
+	{
+		return currentPlayer;
+	}
+
+	@Override
+	public void nextPlayer() 
+	{
+		currentPlayer = -currentPlayer;
 	}
 }
