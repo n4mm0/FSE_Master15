@@ -1,5 +1,7 @@
 package com.mastergame.checkers.model;
 
+import com.mastergame.checkers.model.CheckersPiece.*;
+
 public interface Configuration 
 {
 	/**
@@ -13,11 +15,12 @@ public interface Configuration
 	 * 		2 means there's a white piece
 	 */
 
-	int at(int x, int y);
+	CheckersPiece at(int x, int y);
 
 	
-	int getCurrentPlayer();
+	PieceColor getCurrentPlayer();
 	void nextPlayer();
+	boolean canPieceCapture(int x, int y);
 	
 	/**
 	 * Yields a new configuration where a tile has been swapped

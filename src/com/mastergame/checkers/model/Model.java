@@ -4,7 +4,7 @@ import com.mastergame.checkers.view.View;
 
 public interface Model 
 {
-	public int at(int x, int y);
+	public CheckersPiece at(int x, int y);
 	public Configuration getConfiguration();
 	public boolean mustCapture();
 	public void nextTurn();

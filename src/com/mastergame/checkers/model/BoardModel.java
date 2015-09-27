@@ -1,7 +1,6 @@
 package com.mastergame.checkers.model;
 
 import com.mastergame.checkers.Constants;
-import com.mastergame.checkers.moves.Rules;
 import com.mastergame.checkers.view.View;
 
 public class BoardModel implements Model 
@@ -15,7 +14,7 @@ public class BoardModel implements Model
 		this.configuration = configuration;
 	}
 
-	public int at(int x, int y) {
+	public CheckersPiece at(int x, int y) {
 		return configuration.at(x, y);
 	}
 
@@ -53,7 +52,9 @@ public class BoardModel implements Model
 		{
 			for (int i = 0; i < Constants.boardSize; i++)
 			{
-				if (configuration.at(i, j) == configuration.getCurrentPlayer() && Rules.canPieceCapture(configuration, i, j, configuration.getCurrentPlayer()))
+				if (configuration.at(i, j) != null && configuration.at(i, j).getColor() == configuration.getCurrentPlayer() 
+					//&& Rules.canPieceCapture(configuration, i, j, configuration.at(i, j).getColor()))
+					&& configuration.canPieceCapture(i, j))
 				{
 					mustCapture = true;
 					return;

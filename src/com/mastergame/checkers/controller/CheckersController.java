@@ -2,15 +2,12 @@ package com.mastergame.checkers.controller;
 
 import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.model.Model;
-import com.mastergame.checkers.moves.Mover;
-import com.mastergame.checkers.moves.Rules;
 import com.mastergame.checkers.view.View;
 
 public class CheckersController implements Controller 
 {
 	private final View view;
 	private final Model model;
-	private final Mover mover;
 	
 	private boolean pieceSelected = false;
 	private int selectedPieceX = -1;
@@ -21,7 +18,6 @@ public class CheckersController implements Controller
 	{
 		this.view = view;
 		model = view.getModel();
-		mover = new Mover(model);
 
 		view.setController(this);
 	}
@@ -29,9 +25,9 @@ public class CheckersController implements Controller
 	@Override
 	public void onClick(int x, int y) 
 	{
-		if (model.at(x, y) != 0) //If the tile is not blank
+		if (model.at(x, y) != null) //If the tile is not blank
 		{
-			if (model.at(x, y) == model.getConfiguration().getCurrentPlayer() && !chain)
+			if (model.at(x, y).getColor() == model.getConfiguration().getCurrentPlayer() && !chain)
 			{
 				if (!pieceSelected)
 				{
@@ -58,7 +54,8 @@ public class CheckersController implements Controller
 		{
 			if (pieceSelected)
 			{
-				int moveLegality = Rules.isMoveLegal(model, selectedPieceX, selectedPieceY, x, y);
+				int moveLegality = model.at(selectedPieceX, selectedPieceY).Move(model.getConfiguration(), selectedPieceX, selectedPieceY, x, y);
+
 				if (model.mustCapture())
 				{
 					if (moveLegality == 2)
@@ -92,14 +89,16 @@ public class CheckersController implements Controller
 			{
 				if (model.mustCapture())
 				{
-					if (Rules.isMoveLegal(model, x, y, i, j) == 2)
+					if (model.at(x, y) != null 
+						&& model.at(x, y).Move(model.getConfiguration(), x, y, i, j) == 2)
 					{
 						view.highlightTile(i, j);
 					}
 				}
 				else 
 				{
-					if (Rules.isMoveLegal(model, x, y, i, j) == 1)
+					if (model.at(x, y) != null 
+						&& model.at(x, y).Move(model.getConfiguration(), x, y, i, j) == 1)
 					{
 						view.highlightTile(i, j);
 					}
@@ -112,7 +111,8 @@ public class CheckersController implements Controller
 	{
 		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
 		//Chain check, true if the piece captured before and can capture again
-		if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getConfiguration().getCurrentPlayer()) && model.mustCapture())
+		//if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getConfiguration().getCurrentPlayer()) && model.mustCapture())
+		if (model.getConfiguration().canPieceCapture(toX, toY) && model.mustCapture())
 		{
 			view.resetTilesColor();
 			SelectPiece(toX, toY);

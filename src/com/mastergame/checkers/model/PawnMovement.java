@@ -5,7 +5,7 @@ import com.mastergame.checkers.Constants;
 public class PawnMovement implements PieceMovement {
 
 	@Override
-	public int Move(Configuration configuration, int fromX, int fromY, int toX, int toY) 
+	public int CheckMove(Configuration configuration, int fromX, int fromY, int toX, int toY) 
 	{
 		int distX = Math.abs(toX - fromX);
 		int distY = Math.abs(toY - fromY);
@@ -16,9 +16,9 @@ public class PawnMovement implements PieceMovement {
 			&& (fromY>=0 && fromY<Constants.boardSize)
 			&& (toX>=0 && toX<Constants.boardSize)
 			&& (toY>=0 && toY<Constants.boardSize)
-			&& directionY == configuration.getCurrentPlayer())
+			&& directionY == configuration.getCurrentPlayer().toInt())
 		{
-			if (distX == 1 && distY == 1 && configuration.at(toX, toY) == 0)
+			if (distX == 1 && distY == 1 && configuration.at(toX, toY) == null)
 			{
 				return 1;
 			}
@@ -26,8 +26,9 @@ public class PawnMovement implements PieceMovement {
 			{
 				if (distX == 2 
 					&& distY == 2 
-					&& configuration.at(toX, toY) == 0 
-					&& configuration.at(fromX + directionX, fromY + directionY) == -configuration.getCurrentPlayer())
+					&& configuration.at(toX, toY) == null 
+					&& configuration.at(fromX + directionX, fromY + directionY) != null
+					&& configuration.at(fromX + directionX, fromY + directionY).getColor().toInt() == -configuration.getCurrentPlayer().toInt())
 				{
 					return 2;
 				}

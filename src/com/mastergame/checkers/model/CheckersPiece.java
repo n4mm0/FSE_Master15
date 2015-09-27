@@ -2,20 +2,6 @@ package com.mastergame.checkers.model;
 
 public class CheckersPiece 
 {
-	public enum PieceColor
-	{
-		White(1),
-		Black(-1),
-		Blank(0);
-		
-		private int color;
-		
-		private PieceColor(int color)
-		{
-			this.color = color;
-		}
-	}
-	
 	private PieceColor color;
 	
 	private PieceMovement movement;
@@ -30,7 +16,11 @@ public class CheckersPiece
 	
 	public int Move(Configuration configuration, int fromX, int fromY, int toX, int toY)
 	{
-		return movement.Move(configuration, fromX, fromY, toX, toY);
+		if (movement != null)
+		{
+			return movement.CheckMove(configuration, fromX, fromY, toX, toY);
+		}
+		else return 0;
 	}
 	
 	public PieceColor getColor()

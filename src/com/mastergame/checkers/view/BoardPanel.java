@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.controller.Controller;
 import com.mastergame.checkers.model.Model;
+import com.mastergame.checkers.model.PieceColor;
 import com.sun.xml.internal.bind.WhiteSpaceProcessor;
 
 public class BoardPanel extends JPanel implements View 
@@ -74,20 +75,27 @@ public class BoardPanel extends JPanel implements View
 		}
 		
 		for (int y = 0; y < Constants.boardSize; y++)
+		{
 			for (int x = 0; x < Constants.boardSize; x++)
-				add(buttons[x][y] = mkButton(x, y, model.at(x, y)));
+			{
+				if (model.at(x, y) != null)
+					add(buttons[x][y] = mkButton(x, y, model.at(x, y).getColor()));
+				else
+					add(buttons[x][y] = mkButton(x, y, PieceColor.Blank));
+			}
+		}
 	}
 
-	private JButton mkButton(int x, int y, int value) 
+	private JButton mkButton(int x, int y, PieceColor color) 
 	{
 		JButton button = new JButton();
 		
-		switch (value)
+		switch (color)
 		{
-			case 1: button.setIcon(whitePiece);
+			case White: button.setIcon(whitePiece);
 					break;
 			
-			case -1: button.setIcon(blackPiece);
+			case Black: button.setIcon(blackPiece);
 					break;
 					
 			default:button.setIcon(blank);
@@ -117,19 +125,24 @@ public class BoardPanel extends JPanel implements View
 		{
 			for (int x = 0; x < Constants.boardSize; x++)
 			{
-				int value = model.at(x,y);
-				switch (value)
+				if (model.at(x, y) != null)
 				{
-					case 1: buttons[x][y].setIcon(whitePiece);
-							break;
-					
-					case -1:buttons[x][y].setIcon(blackPiece);
-							break;
-							
-					default:buttons[x][y].setIcon(blank);
-							break;
-				}
+					PieceColor value = model.at(x,y).getColor();
+					switch (value)
+					{
+						case White: buttons[x][y].setIcon(whitePiece);
+								break;
 						
+						case Black:buttons[x][y].setIcon(blackPiece);
+								break;
+								
+						default:break;
+					}
+				}	
+				else 
+				{
+					buttons[x][y].setIcon(blank);
+				}
 			}
 		}
 	}
