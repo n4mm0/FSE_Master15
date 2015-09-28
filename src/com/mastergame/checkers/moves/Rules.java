@@ -30,9 +30,9 @@ public final class Rules
 			&& (fromY>=0 && fromY<Constants.boardSize)
 			&& (toX>=0 && toX<Constants.boardSize)
 			&& (toY>=0 && toY<Constants.boardSize)
-			&& directionY == model.getConfiguration().getCurrentPlayer())
+			&& directionY == model.getConfiguration().getCurrentPlayer().toInt())
 		{
-			if (distX == 1 && distY == 1 && model.at(toX, toY) == 0)
+			if (distX == 1 && distY == 1 && model.at(toX, toY).getColor().toInt() == 0)
 			{
 				return 1;
 			}
@@ -40,8 +40,8 @@ public final class Rules
 			{
 				if (distX == 2 
 					&& distY == 2 
-					&& model.at(toX, toY) == 0 
-					&& model.at(fromX + directionX, fromY + directionY) == -model.getConfiguration().getCurrentPlayer())
+					&& model.at(toX, toY).getColor().toInt() == 0 
+					&& model.at(fromX + directionX, fromY + directionY).getColor().toInt() == -model.getConfiguration().getCurrentPlayer().toInt())
 				{
 					return 2;
 				}
@@ -54,12 +54,12 @@ public final class Rules
 	public static boolean canPieceCapture(Configuration configuration, int x, int y, int currentPlayer)
 	{
 		if ((x - 2 >= 0 && y + currentPlayer*2 >= 0 && y + currentPlayer*2 < Constants.boardSize)
-			&& configuration.at(x - 1, y + currentPlayer) == -currentPlayer
-			&& configuration.at(x - 2, y + currentPlayer*2) == 0)
+			&& configuration.at(x - 1, y + currentPlayer).getColor().toInt() == -currentPlayer
+			&& configuration.at(x - 2, y + currentPlayer*2).getColor().toInt() == 0)
 			return true;
 		if ((x + 2 < Constants.boardSize && y + currentPlayer*2 >= 0 && y + currentPlayer*2 < Constants.boardSize)
-				&& configuration.at(x + 1, y + currentPlayer) == -currentPlayer
-				&& configuration.at(x + 2, y + currentPlayer*2) == 0)
+				&& configuration.at(x + 1, y + currentPlayer).getColor().toInt() == -currentPlayer
+				&& configuration.at(x + 2, y + currentPlayer*2).getColor().toInt() == 0)
 				return true;
 		return false;
 	}
