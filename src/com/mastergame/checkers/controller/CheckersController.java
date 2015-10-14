@@ -82,10 +82,16 @@ public class CheckersController implements Controller
 		selectedPieceY = y;
 		view.selectTile(x, y);
 		
+		//clamp!
+		int xIndex = Math.max(0, Math.min(selectedPieceX - 2, selectedPieceX - 2));
+		int xMax = Math.max(selectedPieceX + 2, Math.min(Constants.boardSize, selectedPieceX + 2));
+		int yIndex = Math.max(0, Math.min(selectedPieceY - 2, selectedPieceY - 2));
+		int yMax = Math.max(selectedPieceY + 2, Math.min(Constants.boardSize, selectedPieceY + 2));
+
 		//Highlight legal moves
-		for (int j = 0; j < Constants.boardSize; j++)
+		for (int j = yIndex; j < yMax; j++)
 		{
-			for (int i = 0; i < Constants.boardSize; i++)
+			for (int i = xIndex; i < xMax ; i++)
 			{
 				if (model.mustCapture())
 				{

@@ -2,31 +2,38 @@ package com.mastergame.checkers.view;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.controller.Controller;
 import com.mastergame.checkers.model.Model;
 import com.mastergame.checkers.model.PieceColor;
-import com.sun.xml.internal.bind.WhiteSpaceProcessor;
 
 public class BoardPanel extends JPanel implements View 
 {
 	private final JFrame frame;
 	private final Model model;
 	private Controller controller;
+	
 	private final JButton[][] buttons = new JButton[Constants.boardSize][Constants.boardSize];
+	
 	private ImageIcon whitePiece;
 	private ImageIcon blackPiece;
 	private ImageIcon blank;
+	
+	private Border standardBorder;
+	private Border selectedBorder;
+	private Border highlightedBorder;
 
 	public BoardPanel(Model model, JFrame frame) 
 	{
@@ -34,7 +41,11 @@ public class BoardPanel extends JPanel implements View
 		this.model = model;
 
 		createButtons();
-
+		
+		standardBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY);
+		selectedBorder = BorderFactory.createMatteBorder(4, 4, 4, 4, Color.CYAN);
+		highlightedBorder = BorderFactory.createMatteBorder(4, 4, 4, 4, Color.YELLOW);
+		
 		model.setView(this);
 	}
 
@@ -79,9 +90,23 @@ public class BoardPanel extends JPanel implements View
 			for (int x = 0; x < Constants.boardSize; x++)
 			{
 				if (model.at(x, y) != null)
+				{
 					add(buttons[x][y] = mkButton(x, y, model.at(x, y).getColor()));
+				}
 				else
+				{
 					add(buttons[x][y] = mkButton(x, y, PieceColor.Blank));
+				}
+				
+				if (y % 2 != 0 && x % 2 == 0)
+				{
+					buttons[x][y].setBackground(new Color(116, 82, 68));
+				}
+				
+				if (y % 2 == 0 && x % 2 != 0)
+				{
+					buttons[x][y].setBackground(new Color(116, 82, 68));
+				}
 			}
 		}
 	}
@@ -103,6 +128,7 @@ public class BoardPanel extends JPanel implements View
 		}
 		
 		button.setBackground(Color.WHITE);
+		//button.setBorder(standardBorder);
 		button.addActionListener(event -> {
 			if (controller != null)
 				controller.onClick(x, y);
@@ -155,13 +181,13 @@ public class BoardPanel extends JPanel implements View
 	@Override
 	public void selectTile(int x, int y)
 	{
-		buttons[x][y].setBackground(Color.CYAN);
+		buttons[x][y].setBorder(selectedBorder);
 	}
 	
 	@Override
 	public void highlightTile(int x, int y)
 	{
-		buttons[x][y].setBackground(Color.YELLOW);
+		buttons[x][y].setBorder(highlightedBorder);
 	}
 	
 	@Override
@@ -169,6 +195,6 @@ public class BoardPanel extends JPanel implements View
 	{
 		for (int y = 0; y < Constants.boardSize; y++)
 			for (int x = 0; x < Constants.boardSize; x++)
-				buttons[x][y].setBackground(Color.WHITE);
+				buttons[x][y].setBorder(standardBorder);
 	}
 }

@@ -36,5 +36,6 @@ public class CheckersPiece
 	public void becomeDame()
 	{
 		dame = true;
+		movement = new DameMovement();
 	}
 }

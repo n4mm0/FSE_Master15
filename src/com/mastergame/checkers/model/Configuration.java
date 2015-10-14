@@ -1,7 +1,5 @@
 package com.mastergame.checkers.model;
 
-import com.mastergame.checkers.model.CheckersPiece.*;
-
 public interface Configuration 
 {
 	/**

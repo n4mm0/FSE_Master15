@@ -3,9 +3,7 @@ package com.mastergame.checkers.view;
 import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import com.mastergame.checkers.model.BoardConfiguration;
 import com.mastergame.checkers.model.BoardModel;
