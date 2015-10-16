@@ -16,6 +16,7 @@ import javax.swing.border.EtchedBorder;
 
 import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.controller.Controller;
+import com.mastergame.checkers.model.CheckersPiece;
 import com.mastergame.checkers.model.Model;
 import com.mastergame.checkers.model.PieceColor;
 
@@ -28,7 +29,9 @@ public class BoardPanel extends JPanel implements View
 	private final JButton[][] buttons = new JButton[Constants.boardSize][Constants.boardSize];
 	
 	private ImageIcon whitePiece;
+	private ImageIcon whiteDame;
 	private ImageIcon blackPiece;
+	private ImageIcon blackDame;
 	private ImageIcon blank;
 	
 	private Border standardBorder;
@@ -61,25 +64,11 @@ public class BoardPanel extends JPanel implements View
 		try 
 		{
 			whitePiece = new ImageIcon(ImageIO.read(new File("assets/white.png")));
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		try 
-		{
+			whiteDame = new ImageIcon(ImageIO.read(new File("assets/white_dame.png")));
 			blackPiece = new ImageIcon(ImageIO.read(new File("assets/black.png")));
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		
-		try 
-		{
+			blackDame = new ImageIcon(ImageIO.read(new File("assets/black_dame.png")));
 			blank = new ImageIcon(ImageIO.read(new File("assets/blank.png")));
-		}
+		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
@@ -118,7 +107,7 @@ public class BoardPanel extends JPanel implements View
 		switch (color)
 		{
 			case White: button.setIcon(whitePiece);
-					break;
+						break;
 			
 			case Black: button.setIcon(blackPiece);
 					break;
@@ -153,14 +142,20 @@ public class BoardPanel extends JPanel implements View
 			{
 				if (model.at(x, y) != null)
 				{
-					PieceColor value = model.at(x,y).getColor();
-					switch (value)
+					CheckersPiece piece = model.at(x,y);
+					switch (piece.getColor())
 					{
-						case White: buttons[x][y].setIcon(whitePiece);
-								break;
+						case White: if (piece.isDame())
+										buttons[x][y].setIcon(whiteDame);
+									else 
+										buttons[x][y].setIcon(whitePiece);
+									break;
 						
-						case Black:buttons[x][y].setIcon(blackPiece);
-								break;
+						case Black: if (piece.isDame())
+										buttons[x][y].setIcon(blackDame);
+									else 
+										buttons[x][y].setIcon(blackPiece);
+									break;
 								
 						default:break;
 					}

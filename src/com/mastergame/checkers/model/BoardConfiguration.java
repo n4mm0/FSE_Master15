@@ -90,6 +90,11 @@ public class BoardConfiguration extends AbstractConfiguration
 			result.set(fromX + directionX, fromY + directionY, null);
 		}
 		
+		if ((currentPlayer == PieceColor.White && intoY == Constants.boardSize - 1) || (currentPlayer == PieceColor.Black && intoY == 0))
+		{
+			fromPiece.becomeDame();
+		}
+		
 		return result;
 	}
 

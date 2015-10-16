@@ -84,9 +84,9 @@ public class CheckersController implements Controller
 		
 		//clamp!
 		int xIndex = Math.max(0, Math.min(selectedPieceX - 2, selectedPieceX - 2));
-		int xMax = Math.max(selectedPieceX + 2, Math.min(Constants.boardSize, selectedPieceX + 2));
+		int xMax = Math.max(selectedPieceX, Math.min(Constants.boardSize, selectedPieceX + 3));
 		int yIndex = Math.max(0, Math.min(selectedPieceY - 2, selectedPieceY - 2));
-		int yMax = Math.max(selectedPieceY + 2, Math.min(Constants.boardSize, selectedPieceY + 2));
+		int yMax = Math.max(selectedPieceY, Math.min(Constants.boardSize, selectedPieceY + 3));
 
 		//Highlight legal moves
 		for (int j = yIndex; j < yMax; j++)
@@ -117,7 +117,7 @@ public class CheckersController implements Controller
 	{
 		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
 		//Chain check, true if the piece captured before and can capture again
-		//if (Rules.canPieceCapture(model.getConfiguration(), toX, toY, model.getConfiguration().getCurrentPlayer()) && model.mustCapture())
+		//Bug, al momento non funziona l'highlight dopo chain
 		if (model.getConfiguration().canPieceCapture(toX, toY) && model.mustCapture())
 		{
 			view.resetTilesColor();
