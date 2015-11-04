@@ -48,6 +48,7 @@ public class BoardModel implements Model
 	public void nextTurn()
 	{
 		configuration.nextPlayer();
+		view.changeCurrentPlayer(configuration.getCurrentPlayer().toInt());
 		for (int j = 0; j < Constants.boardSize; j++)
 		{
 			for (int i = 0; i < Constants.boardSize; i++)

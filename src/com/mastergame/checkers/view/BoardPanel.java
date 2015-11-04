@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -28,6 +29,8 @@ public class BoardPanel extends JPanel implements View
 	
 	private final JButton[][] buttons = new JButton[Constants.boardSize][Constants.boardSize];
 	
+	private JLabel playerText;
+	
 	private ImageIcon whitePiece;
 	private ImageIcon whiteDame;
 	private ImageIcon blackPiece;
@@ -38,10 +41,11 @@ public class BoardPanel extends JPanel implements View
 	private Border selectedBorder;
 	private Border highlightedBorder;
 
-	public BoardPanel(Model model, JFrame frame) 
+	public BoardPanel(Model model, JFrame frame, JLabel playerText) 
 	{
 		this.frame = frame;
 		this.model = model;
+		this.playerText = playerText;
 
 		createButtons();
 		
@@ -191,5 +195,22 @@ public class BoardPanel extends JPanel implements View
 		for (int y = 0; y < Constants.boardSize; y++)
 			for (int x = 0; x < Constants.boardSize; x++)
 				buttons[x][y].setBorder(standardBorder);
+	}
+
+	@Override
+	public void changeCurrentPlayer(int color) 
+	{
+		switch (color)
+		{
+			case 1: playerText.setText("White");
+					playerText.setForeground(Color.GRAY);
+					break;
+					
+			case -1: playerText.setText("Black");
+					playerText.setForeground(Color.BLACK);
+					break;		
+					
+			default:break;
+		}
 	}
 }
