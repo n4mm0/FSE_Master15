@@ -6,7 +6,6 @@ import com.mastergame.checkers.view.View;
 public class BoardModel implements Model 
 {
 	private Configuration configuration;
-	private ConfigurationChangeListener listener;
 	private View view;
 	private boolean mustCapture = false;
 
@@ -30,14 +29,6 @@ public class BoardModel implements Model
 		}
 	};
 
-	public void setConfigurationChangeListener(BoardModel.ConfigurationChangeListener listener) {
-		this.listener = listener;
-	}
-
-	public interface ConfigurationChangeListener {
-		public void onConfigurationChange();
-	}
-
 	@Override
 	public void setView(View view) 
 	{
@@ -47,21 +38,27 @@ public class BoardModel implements Model
 	@Override
 	public void nextTurn()
 	{
-		configuration.nextPlayer();
-		view.changeCurrentPlayer(configuration.getCurrentPlayer().toInt());
-		for (int j = 0; j < Constants.boardSize; j++)
+		//check game over
+		if (!HasGameEnded())
 		{
-			for (int i = 0; i < Constants.boardSize; i++)
+			configuration.nextPlayer();
+			view.changeCurrentPlayer(configuration.getCurrentPlayer().toInt());
+			for (int j = 0; j < Constants.boardSize; j++)
 			{
-				if (configuration.at(i, j) != null && configuration.at(i, j).getColor() == configuration.getCurrentPlayer() 
-					//&& Rules.canPieceCapture(configuration, i, j, configuration.at(i, j).getColor()))
-					&& configuration.canPieceCapture(i, j))
+				for (int i = 0; i < Constants.boardSize; i++)
 				{
-					mustCapture = true;
-					return;
+					if (configuration.at(i, j) != null && configuration.at(i, j).getColor() == configuration.getCurrentPlayer() 
+						&& configuration.canPieceCapture(i, j))
+					{
+						mustCapture = true;
+						view.notifyPlayerHasToCapture();
+						view.highlightHasToCapture(i, j);
+						return;
+					}
 				}
 			}
 		}
+		
 		mustCapture = false;
 	}
 
@@ -69,5 +66,27 @@ public class BoardModel implements Model
 	public boolean mustCapture() 
 	{
 		return mustCapture;
+	}
+
+	@Override
+	public void resetConfiguration() 
+	{
+		setConfiguration(new BoardConfiguration());
+	}
+	
+	private boolean HasGameEnded()
+	{
+		if (configuration.PieceCount(PieceColor.White) == 0)
+		{
+			view.showGameOverDialog(PieceColor.Black.toInt());
+			return true;
+		}
+		else if (configuration.PieceCount(PieceColor.Black) == 0)
+		{
+			view.showGameOverDialog(PieceColor.White.toInt());
+			return true;
+		}
+			
+		return false;
 	}
 }

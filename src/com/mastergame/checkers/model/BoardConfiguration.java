@@ -86,10 +86,10 @@ public class BoardConfiguration extends AbstractConfiguration
 		//If we captured a piece
 		if (distX == 2 && distY == 2)
 		{
-			//result.set(fromX + directionX, fromY + directionY, new CheckersPiece(PieceColor.Blank, null));
 			result.set(fromX + directionX, fromY + directionY, null);
 		}
 		
+		//Check if a piece reached the other side
 		if ((currentPlayer == PieceColor.White && intoY == Constants.boardSize - 1) || (currentPlayer == PieceColor.Black && intoY == 0))
 		{
 			fromPiece.becomeDame();
@@ -126,5 +126,24 @@ public class BoardConfiguration extends AbstractConfiguration
 				&& at(x + 2, y + currentPlayer.toInt()*2) == null)
 				return true;
 			return false;
+	}
+
+	@Override
+	public int PieceCount(PieceColor color) 
+	{
+		int count = 0;
+		
+		for (int y = 0; y < Constants.boardSize; y++)
+		{
+			for (int x = 0; x < Constants.boardSize; x++)
+			{
+				if (at(x,y) != null && at(x,y).getColor() == color)
+				{
+					count++;
+				}
+			}
+		}
+		
+		return count;
 	}
 }

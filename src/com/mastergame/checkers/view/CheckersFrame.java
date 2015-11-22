@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +19,7 @@ public class CheckersFrame extends JFrame
 	private final Controller controller;
 	
 	private JLabel player;
+	private JLabel mustCapture;
 
 	public CheckersFrame() 
 	{
@@ -29,7 +29,6 @@ public class CheckersFrame extends JFrame
 		addInformationPanel();
 		View view = addTiles();
 		controller = new CheckersController(view);
-
 
 		setIconImage(new ImageIcon("img/puzzle15.jpg").getImage());
 	}
@@ -42,14 +41,18 @@ public class CheckersFrame extends JFrame
 		playerLabel.setForeground(Color.BLUE);
 		player = new JLabel("White");
 		player.setForeground(Color.GRAY);
+		mustCapture = new JLabel("- Must capture!");
+		mustCapture.setForeground(Color.RED);
+		mustCapture.setVisible(false);
 		panel.add(playerLabel);
 		panel.add(player);
+		panel.add(mustCapture);
 		add(panel, BorderLayout.SOUTH);
 	}
 
 	private View addTiles() 
 	{
-		BoardPanel panel = new BoardPanel(model, this, player);
+		BoardPanel panel = new BoardPanel(model, this, player, mustCapture);
 		add(panel, BorderLayout.CENTER);
 
 		return panel;

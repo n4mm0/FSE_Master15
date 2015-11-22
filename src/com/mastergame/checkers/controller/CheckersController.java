@@ -37,13 +37,11 @@ public class CheckersController implements Controller
 				{
 					if (x != selectedPieceX || y != selectedPieceY)
 					{
-						//view.deselectTile(selectedPieceX, selectedPieceY);
 						view.resetTilesColor();
 						SelectPiece(x, y);
 					}
 					else 
 					{
-						//view.deselectTile(selectedPieceX, selectedPieceY);
 						view.resetTilesColor();
 						pieceSelected = false;
 					}
@@ -95,7 +93,7 @@ public class CheckersController implements Controller
 			{
 				if (model.mustCapture())
 				{
-					if (model.at(x, y) != null 
+					if (model.at(x, y) != null
 						&& model.at(x, y).Move(model.getConfiguration(), x, y, i, j) == 2)
 					{
 						view.highlightTile(i, j);
@@ -103,7 +101,7 @@ public class CheckersController implements Controller
 				}
 				else 
 				{
-					if (model.at(x, y) != null 
+					if (model.at(x, y) != null
 						&& model.at(x, y).Move(model.getConfiguration(), x, y, i, j) == 1)
 					{
 						view.highlightTile(i, j);
@@ -116,8 +114,8 @@ public class CheckersController implements Controller
 	private void Move(int fromX, int fromY, int toX, int toY)
 	{
 		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
-		//Chain check, true if the piece captured before and can capture again
-		//Bug, al momento non funziona l'highlight dopo chain
+		
+		//Chain check, true if a piece was captured before and the current player can capture again
 		if (model.getConfiguration().canPieceCapture(toX, toY) && model.mustCapture())
 		{
 			view.resetTilesColor();
@@ -131,5 +129,11 @@ public class CheckersController implements Controller
 			view.resetTilesColor();
 			model.nextTurn();
 		}
+	}
+
+	@Override
+	public void resetGame() 
+	{
+		model.resetConfiguration();
 	}
 }

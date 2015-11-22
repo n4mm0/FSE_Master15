@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 
 import com.mastergame.checkers.Constants;
 import com.mastergame.checkers.controller.Controller;
@@ -30,6 +29,7 @@ public class BoardPanel extends JPanel implements View
 	private final JButton[][] buttons = new JButton[Constants.boardSize][Constants.boardSize];
 	
 	private JLabel playerText;
+	private JLabel hasToCaptureText;
 	
 	private ImageIcon whitePiece;
 	private ImageIcon whiteDame;
@@ -40,18 +40,21 @@ public class BoardPanel extends JPanel implements View
 	private Border standardBorder;
 	private Border selectedBorder;
 	private Border highlightedBorder;
+	private Border mustCaptureBorder;
 
-	public BoardPanel(Model model, JFrame frame, JLabel playerText) 
+	public BoardPanel(Model model, JFrame frame, JLabel playerText, JLabel hasToCaptureText) 
 	{
 		this.frame = frame;
 		this.model = model;
 		this.playerText = playerText;
+		this.hasToCaptureText = hasToCaptureText;
 
 		createButtons();
 		
 		standardBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GRAY);
 		selectedBorder = BorderFactory.createMatteBorder(4, 4, 4, 4, Color.CYAN);
 		highlightedBorder = BorderFactory.createMatteBorder(4, 4, 4, 4, Color.YELLOW);
+		mustCaptureBorder = BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED);
 		
 		model.setView(this);
 	}
@@ -121,7 +124,6 @@ public class BoardPanel extends JPanel implements View
 		}
 		
 		button.setBackground(Color.WHITE);
-		//button.setBorder(standardBorder);
 		button.addActionListener(event -> {
 			if (controller != null)
 				controller.onClick(x, y);
@@ -173,8 +175,9 @@ public class BoardPanel extends JPanel implements View
 	}
 
 	@Override
-	public void showSolvedDialog() {
-		//new SolvedDialog(frame, controller).setVisible(true);
+	public void showGameOverDialog(int color) 
+	{
+		new GameOverDialog(controller, color).setVisible(true);
 	}
 
 	@Override
@@ -190,6 +193,12 @@ public class BoardPanel extends JPanel implements View
 	}
 	
 	@Override
+	public void highlightHasToCapture(int x, int y)
+	{
+		buttons[x][y].setBorder(mustCaptureBorder);
+	}
+	
+	@Override
 	public void resetTilesColor()
 	{
 		for (int y = 0; y < Constants.boardSize; y++)
@@ -200,6 +209,7 @@ public class BoardPanel extends JPanel implements View
 	@Override
 	public void changeCurrentPlayer(int color) 
 	{
+		hasToCaptureText.setVisible(false);
 		switch (color)
 		{
 			case 1: playerText.setText("White");
@@ -212,5 +222,11 @@ public class BoardPanel extends JPanel implements View
 					
 			default:break;
 		}
+	}
+	
+	@Override
+	public void notifyPlayerHasToCapture()
+	{
+		hasToCaptureText.setVisible(true);
 	}
 }

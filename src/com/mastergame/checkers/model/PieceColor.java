@@ -1,10 +1,12 @@
 package com.mastergame.checkers.model;
 
+import com.mastergame.checkers.Constants;
+
 public enum PieceColor
 {
-	White(1),
-	Black(-1),
-	Blank(0);
+	White(Constants.whiteCode),
+	Black(Constants.blackCode),
+	Blank(Constants.blankCode);
 	
 	private int color;
 	
